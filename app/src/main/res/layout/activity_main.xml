@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#3C3C3C"
+    android:screenOrientation="sensorLandscape"
+    android:visibility="visible"
+    tools:context=".MainActivity">
+
+    <ImageButton
+        android:id="@+id/imageButtonDown"
+        android:layout_width="48dp"
+        android:layout_height="44dp"
+        android:layout_marginEnd="72dp"
+        android:layout_marginBottom="16dp"
+        android:contentDescription="@string/todo"
+        android:rotation="270"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="?attr/actionModeCloseDrawable"
+        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck,DuplicateSpeakableTextCheck" />
+
+    <ImageButton
+        android:id="@+id/imageButtonRight"
+        android:layout_width="48dp"
+        android:layout_height="44dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="60dp"
+        android:contentDescription="@string/todo"
+        android:rotation="180"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="?attr/actionModeCloseDrawable"
+        tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck,ImageContrastCheck" />
+
+    <ImageButton
+        android:id="@+id/imageButtonLeft"
+        android:layout_width="48dp"
+        android:layout_height="44dp"
+        android:layout_marginEnd="48dp"
+        android:layout_marginBottom="60dp"
+        android:contentDescription="@string/todo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/imageButtonRight"
+        app:srcCompat="?attr/actionModeCloseDrawable"
+        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck,DuplicateSpeakableTextCheck" />
+
+    <ImageButton
+        android:id="@+id/imageButtonUp"
+        android:layout_width="48dp"
+        android:layout_height="44dp"
+        android:layout_marginEnd="72dp"
+        android:layout_marginBottom="44dp"
+        android:contentDescription="@string/todo"
+        android:rotation="90"
+        app:layout_constraintBottom_toTopOf="@+id/imageButtonDown"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="?attr/actionModeCloseDrawable"
+        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck,ImageContrastCheck" />
+
+    <SurfaceView
+        android:id="@+id/VideoViewGoPro"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="50dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/imageButtonLeft"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
+
+    <ImageButton
+        android:id="@+id/imageButtonBT_Enable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="4dp"
+        android:contentDescription="@string/todo"
+        android:foregroundTint="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/stat_sys_data_bluetooth"
+        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck,ImageContrastCheck" />
+
+    <ImageButton
+        android:id="@+id/imageButtonBT_Search"
+        android:layout_width="48dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="4dp"
+        android:contentDescription="@string/todo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageButtonBT_Enable"
+        app:srcCompat="@android:drawable/ic_menu_search"
+        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck,ImageContrastCheck" />
+
+    <Spinner
+        android:id="@+id/spinnerBT_Devices"
+        android:layout_width="147dp"
+        android:layout_height="43dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="4dp"
+        app:layout_constraintEnd_toStartOf="@+id/imageButtonBT_Enable"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+
+    <ImageButton
+        android:id="@+id/imageButtonStop"
+        android:layout_width="48dp"
+        android:layout_height="44dp"
+        android:contentDescription="TODO"
+        app:layout_constraintBottom_toTopOf="@+id/imageButtonDown"
+        app:layout_constraintEnd_toStartOf="@+id/imageButtonRight"
+        app:srcCompat="@android:drawable/presence_offline"
+        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck,ImageContrastCheck" />
+
+    <ImageButton
+        android:id="@+id/imageButtonLive"
+        android:layout_width="48dp"
+        android:layout_height="41dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageButtonBT_Search"
+        app:srcCompat="@android:drawable/ic_menu_slideshow"
+        tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+
+    <WebView
+        android:id="@+id/WebView"
+        android:layout_width="405dp"
+        android:layout_height="87dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="16dp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="gone" />
+
+    <CheckBox
+        android:id="@+id/checkBoxRecord"
+        android:layout_width="136dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="4dp"
+        android:text="Record"
+        app:layout_constraintEnd_toStartOf="@+id/imageButtonLive"
+        app:layout_constraintTop_toBottomOf="@+id/checkBoxStream"
+        tools:ignore="TouchTargetSizeCheck" />
+
+    <CheckBox
+        android:id="@+id/checkBoxStream"
+        android:layout_width="136dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginEnd="4dp"
+        android:text="Stream"
+        app:layout_constraintEnd_toStartOf="@+id/imageButtonBT_Search"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerBT_Devices"
+        tools:ignore="TouchTargetSizeCheck" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="0dp"
+        android:layout_height="22dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="10dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/VideoViewGoPro"
+        app:layout_constraintTop_toBottomOf="@+id/checkBoxRecord" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

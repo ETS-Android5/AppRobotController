@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">AppRobotController</string>
+    <string name="recherche_bluetooth">Recherche Bluetooth</string>
+    <string name="bouton_pour_avanc">Bouton pour avancé</string>
+    <string name="textview">TextView</string>
+    <string name="todo">TODO</string>
+</resources>
