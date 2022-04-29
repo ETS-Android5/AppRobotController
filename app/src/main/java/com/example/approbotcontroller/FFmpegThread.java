@@ -8,11 +8,13 @@ import com.arthenica.ffmpegkit.FFmpegSession;
 
 
 public class FFmpegThread extends Thread{
-    View _myView;
-    String cmd = "-fflags nobuffer -f:v mpegts -probesize 8192 -i udp://10.5.5.100:8554 -f mpegts -vcodec copy rtp://localhost:10000";
-    FFmpegSession session;
+    private View _myView;
+    private String cmd = "-fflags nobuffer -f:v mpegts -probesize 8192 -i udp://10.5.5.100:8554 -f mpegts -vcodec copy rtp://localhost:10000";
+    private FFmpegSession session;
+    private boolean FFmpegKill;
 
     public FFmpegThread(View view){
+        FFmpegKill = false;
         _myView = view;
     }
 
@@ -25,9 +27,13 @@ public class FFmpegThread extends Thread{
         });
     }
 
+    public void Kill(){
+        FFmpegKill = true;
+    }
+
     @Override
     public void run(){
         session = FFmpegKit.execute(cmd);
-        WriteToast(session.getState().toString());
+        while(!FFmpegKill);
     }
 }

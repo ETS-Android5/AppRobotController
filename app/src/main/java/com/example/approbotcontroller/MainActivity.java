@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     ImageButton _buttonBT_Search;
     Spinner _spinnerBT_Devices;
     ImageButton _buttonLive;
-    SurfaceView _myVideoView;
+    SurfaceView _mySurfaceView;
     WebView _myWebView;
     CheckBox _myCheckStream;
     CheckBox _myCheckRecord;
@@ -57,6 +57,9 @@ public class MainActivity extends AppCompatActivity {
 
     UDP_Client_Thread _myUdpClientThread;
     FFmpegThread _myFFmpegThread;
+    LibVLC _myLibVlc;
+    MediaPlayer _myPlayer;
+    IVLCVout _myVout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
         _buttonLive = (ImageButton) findViewById(R.id.imageButtonLive);
         _myCheckRecord = (CheckBox) findViewById(R.id.checkBoxRecord);
         _myCheckStream = (CheckBox) findViewById(R.id.checkBoxStream);
-        _myVideoView = (SurfaceView) findViewById(R.id.VideoViewGoPro);
+        _mySurfaceView = (SurfaceView) findViewById(R.id.SurfaceViewGoPro);
         _myWebView = (WebView) findViewById(R.id.WebView);
         _myTextView = (TextView) findViewById(R.id.textView);
 
@@ -125,15 +128,28 @@ public class MainActivity extends AppCompatActivity {
          * @Udp_Commands_Link : 10.5.5.9:8554
          * @Udp_VideoStream_Link : 10.5.5.100:8554
          */
-        _myWebView.loadUrl("http://10.5.5.9/gp/gpControl/execute?p1=gpStream&a1=proto_v2&c1=restart");
-        Toast.makeText(this, "Live starting", Toast.LENGTH_SHORT).show();
-        _myUdpClientThread = new UDP_Client_Thread(this.getCurrentFocus());
+        _myUdpClientThread = new UDP_Client_Thread(findViewById(android.R.id.content));
         _myUdpClientThread.start();
+        _myFFmpegThread = new FFmpegThread(findViewById(android.R.id.content));
+        _myFFmpegThread.start();
+
+        _myLibVlc = new LibVLC(findViewById(android.R.id.content).getContext());
+        _myPlayer = new MediaPlayer(_myLibVlc);
+        _myVout = _myPlayer.getVLCVout();
+        _myVout.setVideoView(_mySurfaceView);
+        _myVout.attachViews();
+
         buttonLiveClick();
     }
 
     @Override
     protected void onDestroy() {
+        if(_myUdpClientThread != null){
+            _myUdpClientThread.Kill();
+        }
+        if(_myFFmpegThread != null){
+            _myFFmpegThread.Kill();
+        }
         super.onDestroy();
     }
 
@@ -258,45 +274,14 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(v.getContext(), "Record starting", Toast.LENGTH_SHORT).show();
                     _myWebView.loadUrl("http://10.5.5.9/gp/gpControl/command/shutter?p=1");
                 }
-
-                if(_myUdpClientThread != null && _myUdpClientThread.isAlive()){
-                    _myUdpClientThread.interrupt();
-                }
-                if(_myFFmpegThread != null && _myFFmpegThread.isAlive()){
-                    _myFFmpegThread.interrupt();
-                }
-
                 if(_myCheckStream.isChecked()){
                     _myWebView.loadUrl("http://10.5.5.9/gp/gpControl/execute?p1=gpStream&a1=proto_v2&c1=restart");
-
-                    /*
                     Toast.makeText(v.getContext(), "Live starting", Toast.LENGTH_SHORT).show();
 
-                    _myUdpClientThread = new UDP_Client_Thread(v);
-                    _myUdpClientThread.start();
-
-                    _myFFmpegThread = new FFmpegThread(v);
-                    //_myFFmpegThread.start();
-                    */
-
-                    String UDP_PORT = "8554";
-                    ArrayList<String> _Options = new ArrayList<String>();
-                    _Options.add("--file-caching=8192");
-                    _Options.add("--network-caching=8192");
-                    _Options.add("--clock-jitter=0");
-                    _Options.add("--live-caching=8192");
-                    _Options.add("--clock-synchro=0");
-                    _Options.add("-vvv");
-                    _Options.add("--drop-late-frames");
-                    _Options.add("--skip-frames");
-                    LibVLC libVlc = new LibVLC(v.getContext(), _Options);
-                    MediaPlayer player = new MediaPlayer(libVlc);
-                    IVLCVout vout = player.getVLCVout();
-                    vout.setVideoView(_myVideoView);
-                    vout.attachViews();
-                    Media media = new Media(libVlc, Uri.parse("udp://@:" + UDP_PORT + "/"));
-                    player.setMedia(media);
-                    player.play();
+                    Media media = new Media(_myLibVlc, Uri.parse("udp://@:10000/"));
+                    _myPlayer.setMedia(media);
+                    _myPlayer.play();
+                    
                 }
             }
         });

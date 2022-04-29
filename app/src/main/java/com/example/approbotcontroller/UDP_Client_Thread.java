@@ -22,8 +22,10 @@ public class UDP_Client_Thread extends Thread {
     private String _myUdp;
     private InetAddress _myAddress;
     private View _myView;
+    private boolean UDPKill;
 
     public UDP_Client_Thread(View view) {
+        UDPKill = false;
         _myView = view;
         _myPort = 8554;
         _myUdp = "10.5.5.9";
@@ -50,10 +52,14 @@ public class UDP_Client_Thread extends Thread {
         });
     }
 
+    public void Kill(){
+        UDPKill = true;
+    }
+
     @Override
     public void run() {
         _mySocket.connect(_myAddress, _myPort);
-        while(true){
+        while(!UDPKill){
             try {
                 _mySocket.send(_myPacket);
                 Thread.currentThread().sleep(2500);
