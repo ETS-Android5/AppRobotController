@@ -9,7 +9,7 @@ import com.arthenica.ffmpegkit.FFmpegSession;
 
 public class FFmpegThread extends Thread{
     private View _myView;
-    private String cmd = "-fflags nobuffer -f:v mpegts -probesize 8192 -i udp://10.5.5.100:8554 -f mpegts -vcodec copy rtp://localhost:10000";
+    private String cmd = "-fflags nobuffer -f:v mpegts -probesize 8192 -i udp://10.5.5.100:8554 -preset ultrafast -vcodec libx264 -tune zerolatency -b 900k -f mpegts -vcodec copy udp://127.0.0.1:10000";
     private FFmpegSession session;
     private boolean FFmpegKill;
 

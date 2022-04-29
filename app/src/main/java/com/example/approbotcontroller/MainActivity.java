@@ -133,7 +133,17 @@ public class MainActivity extends AppCompatActivity {
         _myFFmpegThread = new FFmpegThread(findViewById(android.R.id.content));
         _myFFmpegThread.start();
 
-        _myLibVlc = new LibVLC(findViewById(android.R.id.content).getContext());
+        ArrayList<String> _Options = new ArrayList<String>();
+        _Options.add("--file-caching=2000");
+        _Options.add("--network-caching=150");
+        _Options.add("--clock-jitter=0");
+        _Options.add("--udp-caching=1000");
+        _Options.add("--clock-synchro=0");
+        _Options.add("-vvv");
+        _Options.add("--drop-late-frames");
+        _Options.add("--skip-frames");
+        _Options.add("--low-delay");
+        _myLibVlc = new LibVLC(findViewById(android.R.id.content).getContext(), _Options);
         _myPlayer = new MediaPlayer(_myLibVlc);
         _myVout = _myPlayer.getVLCVout();
         _myVout.setVideoView(_mySurfaceView);
@@ -278,7 +288,7 @@ public class MainActivity extends AppCompatActivity {
                     _myWebView.loadUrl("http://10.5.5.9/gp/gpControl/execute?p1=gpStream&a1=proto_v2&c1=restart");
                     Toast.makeText(v.getContext(), "Live starting", Toast.LENGTH_SHORT).show();
 
-                    Media media = new Media(_myLibVlc, Uri.parse("udp://@:10000/"));
+                    Media media = new Media(_myLibVlc, Uri.parse("udp://@:10000"));
                     _myPlayer.setMedia(media);
                     _myPlayer.play();
                     
