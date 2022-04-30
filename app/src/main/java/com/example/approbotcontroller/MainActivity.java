@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     ImageButton _buttonBT_Search;
     Spinner _spinnerBT_Devices;
     ImageButton _buttonLive;
-    SurfaceView _mySurfaceView;
+    SurfaceView _myVideoView;
     WebView _myWebView;
     CheckBox _myCheckStream;
     CheckBox _myCheckRecord;
@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
         _buttonLive = (ImageButton) findViewById(R.id.imageButtonLive);
         _myCheckRecord = (CheckBox) findViewById(R.id.checkBoxRecord);
         _myCheckStream = (CheckBox) findViewById(R.id.checkBoxStream);
-        _mySurfaceView = (SurfaceView) findViewById(R.id.SurfaceViewGoPro);
+        _myVideoView = (SurfaceView) findViewById(R.id.VideoViewGoPro);
         _myWebView = (WebView) findViewById(R.id.WebView);
         _myTextView = (TextView) findViewById(R.id.textView);
 
@@ -137,16 +137,15 @@ public class MainActivity extends AppCompatActivity {
         _Options.add("--file-caching=2000");
         _Options.add("--network-caching=150");
         _Options.add("--clock-jitter=0");
-        _Options.add("--udp-caching=1000");
+        _Options.add("--live-caching=1000");
         _Options.add("--clock-synchro=0");
         _Options.add("-vvv");
         _Options.add("--drop-late-frames");
         _Options.add("--skip-frames");
-        _Options.add("--low-delay");
         _myLibVlc = new LibVLC(findViewById(android.R.id.content).getContext(), _Options);
         _myPlayer = new MediaPlayer(_myLibVlc);
         _myVout = _myPlayer.getVLCVout();
-        _myVout.setVideoView(_mySurfaceView);
+        _myVout.setVideoView(_myVideoView);
         _myVout.attachViews();
 
         buttonLiveClick();
@@ -291,7 +290,6 @@ public class MainActivity extends AppCompatActivity {
                     Media media = new Media(_myLibVlc, Uri.parse("udp://@:10000"));
                     _myPlayer.setMedia(media);
                     _myPlayer.play();
-                    
                 }
             }
         });

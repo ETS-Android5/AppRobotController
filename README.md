@@ -13,7 +13,7 @@ _These libs are already compiled and implemented in the project._
 ### Bluetooth Control :
 The bluetooth communication is made with __[Bluetooth V3](https://www.gotronic.fr/art-module-bluetooth-v3-tel0026-19389.htm).__
 
-__⚠️Warning⚠️ :__ if you intend to use another module, you should know that the _UUID_ is important to be set with the right value, otherwise your device will appear to be paired but it won't connect.
+__⚠️Warning⚠️ :__ if you intend to use another module, you should know that _UUID_ must be set with the right value, otherwise your device will appear to be paired but it won't connect.
 
 ### Camera/GoPro Control :
 The camera communication is made on the client side with HTTP request and the camera returns a UDP streams that can be displayed with FFmpeg.
