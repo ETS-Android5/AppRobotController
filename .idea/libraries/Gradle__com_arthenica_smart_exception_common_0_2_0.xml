@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Gradle: com.arthenica:smart-exception-common:0.2.0">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.arthenica/smart-exception-common/0.2.0/572c6a8c4f5815848db8a8e22a14f277abf31ad8/smart-exception-common-0.2.0.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.arthenica/smart-exception-common/0.2.0/7c1a767add9600171beeebfcf04ab1d146b634af/smart-exception-common-0.2.0-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.arthenica/smart-exception-common/0.2.0/55472d9f6b6f3fb7430f6b6599ebbbc44b2c0688/smart-exception-common-0.2.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

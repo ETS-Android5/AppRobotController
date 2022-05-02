@@ -9,6 +9,17 @@
     android:visibility="visible"
     tools:context=".MainActivity">
 
+    <org.videolan.libvlc.util.VLCVideoLayout
+        android:id="@+id/VLCVideoLayoutGoPro"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
+
     <ImageButton
         android:id="@+id/imageButtonDown"
         android:layout_width="48dp"
@@ -59,18 +70,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="?attr/actionModeCloseDrawable"
         tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck,ImageContrastCheck" />
-
-    <SurfaceView
-        android:id="@+id/VideoViewGoPro"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginEnd="50dp"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/imageButtonLeft"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:visibility="visible" />
 
     <ImageButton
         android:id="@+id/imageButtonBT_Enable"
@@ -169,7 +168,7 @@
         android:layout_marginTop="10dp"
         android:text="TextView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/VideoViewGoPro"
+        app:layout_constraintStart_toEndOf="@+id/VLCVideoLayoutGoPro"
         app:layout_constraintTop_toBottomOf="@+id/checkBoxRecord" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
