@@ -9,10 +9,8 @@ import android.view.View;
 import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,15 +31,12 @@ public class MainActivity extends AppCompatActivity {
     ImageButton _buttonDown;
     ImageButton _buttonUp;
     ImageButton _buttonStop;
-    ImageButton _buttonBT_Enable;
     ImageButton _buttonBT_Search;
     Spinner _spinnerBT_Devices;
     ImageButton _buttonLive;
+    ImageButton _buttonRecord;
     VLCVideoLayout _myVideoView;
     WebView _myWebView;
-    CheckBox _myCheckStream;
-    CheckBox _myCheckRecord;
-    TextView _myTextView;
 
     public BluetoothAdapter _myBluetoothAdapter;
     Intent _btEnablingIntent;
@@ -60,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
     LibVLC _myLibVlc;
     MediaPlayer _myPlayer;
     IVLCVout _myVout;
+    boolean RECORDING;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,15 +70,12 @@ public class MainActivity extends AppCompatActivity {
         _buttonDown = (ImageButton) findViewById(R.id.imageButtonDown);
         _buttonUp = (ImageButton) findViewById(R.id.imageButtonUp);
         _buttonStop = (ImageButton) findViewById(R.id.imageButtonStop);
-        _buttonBT_Enable = (ImageButton) findViewById(R.id.imageButtonBT_Enable);
         _buttonBT_Search = (ImageButton) findViewById(R.id.imageButtonBT_Search);
         _spinnerBT_Devices = (Spinner) findViewById(R.id.spinnerBT_Devices);
         _buttonLive = (ImageButton) findViewById(R.id.imageButtonLive);
-        _myCheckRecord = (CheckBox) findViewById(R.id.checkBoxRecord);
-        _myCheckStream = (CheckBox) findViewById(R.id.checkBoxStream);
+        _buttonRecord = (ImageButton) findViewById(R.id.imageButtonRecordGoPro);
         _myVideoView = (VLCVideoLayout) findViewById(R.id.VLCVideoLayoutGoPro);
         _myWebView = (WebView) findViewById(R.id.WebView);
-        _myTextView = (TextView) findViewById(R.id.textView);
 
         /**
          * Moving
@@ -99,7 +92,6 @@ public class MainActivity extends AppCompatActivity {
          * @Warning_UUID : UUID is selected to work with Bluetooth serial card,
          *                 changing the UUID is not possible
          */
-        buttonBT_EnableClick();
         buttonBT_SearchClick();
         _myBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         _btEnablingIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
@@ -128,14 +120,12 @@ public class MainActivity extends AppCompatActivity {
          * @Udp_Commands_Link : 10.5.5.9:8554
          * @Udp_VideoStream_Link : 10.5.5.100:8554
          */
+        RECORDING = false;
+
         _myUdpClientThread = new UDP_Client_Thread(findViewById(android.R.id.content));
         _myUdpClientThread.start();
         _myFFmpegThread = new FFmpegThread(findViewById(android.R.id.content));
         _myFFmpegThread.start();
-
-        int mHeight = _myVideoView.getHeight();
-        int mWidth = _myVideoView.getWidth();
-
 
         ArrayList<String> _Options = new ArrayList<String>();
         _Options.add("--file-caching=2000");
@@ -151,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
         _myPlayer = new MediaPlayer(_myLibVlc);
         _myPlayer.attachViews(_myVideoView, null, false, false);
         _myVout = _myPlayer.getVLCVout();
-
+        buttonRecordClick();
         buttonLiveClick();
     }
 
@@ -233,8 +223,8 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void buttonBT_EnableClick() {
-        _buttonBT_Enable.setOnClickListener(new View.OnClickListener() {
+    public void buttonBT_SearchClick() {
+        _buttonBT_Search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (_myBluetoothAdapter == null) {
@@ -245,19 +235,7 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(v.getContext(), "Bluetooth ON", Toast.LENGTH_SHORT).show();
                         _myBluetoothAdapter.enable();
                     }
-                    else{
-                        Toast.makeText(v.getContext(), "Bluetooth OFF", Toast.LENGTH_SHORT).show();
-                        _myBluetoothAdapter.disable();
-                    }
                 }
-            }
-        });
-    }
-
-    public void buttonBT_SearchClick() {
-        _buttonBT_Search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
                 _BT_DevicesName_list.clear();
                 _BT_Devices_list.clear();
                 if (_myBluetoothAdapter != null && _myBluetoothAdapter.isEnabled()) {
@@ -278,23 +256,32 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    public void buttonRecordClick(){
+        _buttonRecord.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(RECORDING == false){
+                    _myWebView.loadUrl("http://10.5.5.9/gp/gpControl/command/shutter?p=1");
+                    RECORDING = true;
+                }
+                else{
+                    _myWebView.loadUrl("http://10.5.5.9/gp/gpControl/command/shutter?p=0");
+                    RECORDING = false;
+                }
+            }
+        });
+    }
+
     public void buttonLiveClick() {
         _buttonLive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                _myWebView.loadUrl("http://10.5.5.9/gp/gpControl/command/shutter?p=0");
-                if(_myCheckRecord.isChecked()){
-                    Toast.makeText(v.getContext(), "Record starting", Toast.LENGTH_SHORT).show();
-                    _myWebView.loadUrl("http://10.5.5.9/gp/gpControl/command/shutter?p=1");
-                }
-                if(_myCheckStream.isChecked()){
-                    _myWebView.loadUrl("http://10.5.5.9/gp/gpControl/execute?p1=gpStream&a1=proto_v2&c1=restart");
-                    Toast.makeText(v.getContext(), "Live starting", Toast.LENGTH_SHORT).show();
+                _myWebView.loadUrl("http://10.5.5.9/gp/gpControl/execute?p1=gpStream&a1=proto_v2&c1=restart");
+                Toast.makeText(v.getContext(), "Live starting", Toast.LENGTH_SHORT).show();
 
-                    Media media = new Media(_myLibVlc, Uri.parse("udp://@:10000"));
-                    _myPlayer.setMedia(media);
-                    _myPlayer.play();
-                }
+                Media media = new Media(_myLibVlc, Uri.parse("udp://@:10000"));
+                _myPlayer.setMedia(media);
+                _myPlayer.play();
             }
         });
     }
