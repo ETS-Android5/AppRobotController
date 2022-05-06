@@ -9,8 +9,8 @@ import com.arthenica.ffmpegkit.FFmpegSession;
 
 public class FFmpegThread extends Thread{
     private View _myView;
-    private String cmd = "-fflags nobuffer -f:v mpegts -probesize 8192 -i udp://10.5.5.100:8554 -preset ultrafast -vcodec libx264 -tune zerolatency -b 900k -f mpegts -vcodec copy udp://127.0.0.1:10000";
-    private FFmpegSession session;
+    private String cmd = "-an -flags low_delay -flags2 fast -fflags nobuffer -f:v mpegts -probesize 8192 -i udp://10.5.5.100:8554 -max_delay 1000 -preset ultrafast -r 24 -vcodec libx264 -tune zerolatency -b 900k -f mpegts -vcodec copy udp://127.0.0.1:10000";
+    private FFmpegSession _mySession;
     private boolean FFmpegKill;
 
     public FFmpegThread(View view){
@@ -33,7 +33,7 @@ public class FFmpegThread extends Thread{
 
     @Override
     public void run(){
-        session = FFmpegKit.execute(cmd);
+        _mySession = FFmpegKit.execute(cmd);
         while(!FFmpegKill);
     }
 }

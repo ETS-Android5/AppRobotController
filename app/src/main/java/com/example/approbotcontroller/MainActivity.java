@@ -128,10 +128,10 @@ public class MainActivity extends AppCompatActivity {
         _myFFmpegThread.start();
 
         ArrayList<String> _Options = new ArrayList<String>();
-        _Options.add("--file-caching=2000");
+        _Options.add("--file-caching=150");
         _Options.add("--network-caching=150");
         _Options.add("--clock-jitter=0");
-        _Options.add("--live-caching=1000");
+        _Options.add("--live-caching=10000");
         _Options.add("--clock-synchro=0");
         _Options.add("--fullscreen");
         _Options.add("-vvv");
@@ -155,8 +155,6 @@ public class MainActivity extends AppCompatActivity {
         }
         super.onDestroy();
     }
-
-
 
     public void buttonUpClick() {
         _buttonUp.setOnClickListener(new View.OnClickListener() {
@@ -280,6 +278,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(v.getContext(), "Live starting", Toast.LENGTH_SHORT).show();
 
                 Media media = new Media(_myLibVlc, Uri.parse("udp://@:10000"));
+                //media.setHWDecoderEnabled(true, false);
                 _myPlayer.setMedia(media);
                 _myPlayer.play();
             }
