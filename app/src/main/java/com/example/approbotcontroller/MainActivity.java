@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
 
     UDP_Client_Thread _myUdpClientThread;
     FFmpegThread _myFFmpegThread;
+    RefreshLiveThread _myRefreshLiveThread;
     LibVLC _myLibVlc;
     MediaPlayer _myPlayer;
     IVLCVout _myVout;
@@ -126,6 +127,7 @@ public class MainActivity extends AppCompatActivity {
         _myUdpClientThread.start();
         _myFFmpegThread = new FFmpegThread(findViewById(android.R.id.content));
         _myFFmpegThread.start();
+        _myRefreshLiveThread = new RefreshLiveThread(_myWebView);
 
         ArrayList<String> _Options = new ArrayList<String>();
         _Options.add("--file-caching=150");
@@ -141,6 +143,8 @@ public class MainActivity extends AppCompatActivity {
         _myPlayer = new MediaPlayer(_myLibVlc);
         _myPlayer.attachViews(_myVideoView, null, false, false);
         _myVout = _myPlayer.getVLCVout();
+
+
         buttonRecordClick();
         buttonLiveClick();
     }
@@ -152,6 +156,9 @@ public class MainActivity extends AppCompatActivity {
         }
         if(_myFFmpegThread != null){
             _myFFmpegThread.Kill();
+        }
+        if(_myRefreshLiveThread != null){
+            _myRefreshLiveThread.Kill();
         }
         super.onDestroy();
     }
@@ -274,13 +281,11 @@ public class MainActivity extends AppCompatActivity {
         _buttonLive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                _myWebView.loadUrl("http://10.5.5.9/gp/gpControl/execute?p1=gpStream&a1=proto_v2&c1=restart");
-                Toast.makeText(v.getContext(), "Live starting", Toast.LENGTH_SHORT).show();
-
-                Media media = new Media(_myLibVlc, Uri.parse("udp://@:10000"));
-                //media.setHWDecoderEnabled(true, false);
+                Media media = new Media(_myLibVlc, Uri.parse("udp://@:12345"));
+                media.setHWDecoderEnabled(true, true);
                 _myPlayer.setMedia(media);
                 _myPlayer.play();
+                _myRefreshLiveThread.start();
             }
         });
     }
